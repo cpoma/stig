@@ -5,14 +5,48 @@
 # grub.pbkdf2.sha512.10000.018CE115164107059077A[... cut for brevity ...]525DE71E3FF5FC734461C6
 default['stig']['grub']['hashedpassword'] = ''
 
+#############################################################################
+# BEGIN - Configure max_login default to 10 or less per STIG - V-72217
+#############################################################################
+default['stig']['limits_conf']['max_logins'] = 10
+# Override with Databag Values, if present. Some Customers require 3 versus
+# 10 as value. This databag may not exist so we need to check for Exceptions
+# and catch them if it does not exist or is not digits
+package_data = begin
+            Chef::DataBagItem.load('stig', 'packages')
+          rescue Net::HTTPServerException, Chef::Exceptions::InvalidDataBagPath
+            [] # empty array for length comparison
+          end
+# Just because the DataBag exists does not mean that the nested key here will
+# exist, so lets check for the nil exception and catch that too. If it does
+# exist and have an all digit value, we will override the default.
+all_numbers_re = /^\d+$/
+unless package_data.empty?
+  default['stig']['limits_conf']['max_logins'] = begin
+    package_data[node.chef_environment]['limits_conf']['max_logins'].empty? || !all_numbers_re.match(package_data[node.chef_environment]['limits_conf']['max_logins']) ? default['stig']['limits_conf']['max_logins'] : package_data[node.chef_environment]['limits_conf']['max_logins']
+  rescue NoMethodError
+    default['stig']['limits_conf']['max_logins']
+  end
+end
+
 # Set hard core to 0 according to CIS 1.5.1
+# V-72217 - The operating system must limit the number of concurrent sessions
+# to 10 (or less) for all accounts and/or account types.
 default['stig']['limits'] = [
   {
     '*' => {
       'hard' => 'core 0'
     }
+  },
+  {
+    '*' => {
+      'hard' => "maxlogins #{default['stig']['limits_conf']['max_logins']}"
+    }
   }
 ]
+#############################################################################
+# END - Configure max_login default to 10 or less per STIG - V-72217
+#############################################################################
 
 # Aide configuration
 # See https://linux.die.net/man/5/aide.conf
