@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [UNRELEASED]
 ### Added
 -- [isuftin@usgs.gov] - STIG 6.1.6 - File permissions for /etc/passwd-
+-- [cpoma@mitre.org] - Added default["stig"]["mount_disable"]["disable_usb_storage"] to disable USB Storage. RHEL-06-000503 - CCI-001250
+-- [cpoma@mitre.org] - Configure /etc/security/limits.conf max_login default to 10 or less
 ### Updated
 -- [isuftin@usgs.gov] - STIG 6.2.7 - Update script to check for users having a home dir
 -- [isuftin@usgs.gov] - Narrowed down sshd MACs config to what works for EL6 and EL7
@@ -37,7 +39,7 @@ Old Line: default['stig']['sshd_config']['macs'] = 'hmac-md5,hmac-sha1,hmac-ripe
 Replaced with: default['stig']['sshd_config']['macs'] = 'hmac-sha2-512,hmac-sha2-256,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com'
 See https://people.redhat.com/swells/scap-security-guide/tables/table-rhel7-stig.html
 See http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2630.pdf
-- [cpoma@mitre.org] - Added "install fat /bin/true" to stig/templates/etc_modprobe.d_CIS.conf.erb. This will fully disable vfat.
+-- [cpoma@mitre.org] - Added "install fat /bin/true" to stig/templates/etc_modprobe.d_CIS.conf.erb. This will fully disable vfat.
 
 ## [0.6.11]
 ### Updated
