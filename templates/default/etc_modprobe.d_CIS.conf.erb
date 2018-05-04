@@ -38,6 +38,10 @@ install vfat /bin/true
 install fat /bin/true
 <% end -%>
 
+<% if node["stig"]["mount_disable"]["disable_usb_storage"] -%>
+install usb-storage /bin/true
+<% end -%>
+
 <% if node["stig"]["network"]["disable_dcpp"] -%>
 install dccp /bin/true
 <% end -%>

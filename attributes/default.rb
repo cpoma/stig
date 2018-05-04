@@ -421,6 +421,11 @@ default['stig']['mount_disable']['squashfs'] = true
 default['stig']['mount_disable']['udf'] = true
 default['stig']['mount_disable']['vfat'] = true
 
+# Disable USB Storage - RHEL-06-000503 - CCI-001250
+# true = disable
+# false = enable
+default['stig']['mount_disable']['disable_usb_storage'] = true
+
 # Disable Avahi Server
 # true / false
 default['stig']['network']['zeroconf'] = true
