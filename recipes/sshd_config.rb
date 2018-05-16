@@ -113,6 +113,18 @@ template '/etc/ssh/sshd_config' do
   notifies :restart, 'service[sshd]', :delayed
 end
 
+# control "V-72257" do
+# title "The SSH private host key files must have mode 0600 or less permissive."
+# desc  "If an unauthorized user obtains the private SSH host key file, the host
+# could be impersonated."
+Dir.glob('/etc/ssh/*ssh_host*key') do |keyfile|
+  directory keyfile do
+    owner 'root'
+    group 'root'
+    mode 0o600
+  end
+end
+
 service 'sshd' do
   action :nothing
 end

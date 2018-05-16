@@ -5,9 +5,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASED]
 ### Added
+-- [isuftin@usgs.gov] - Sticking to major version of CentOS in Test Kitchen
 -- [isuftin@usgs.gov] - STIG 6.1.6 - File permissions for /etc/passwd-
 -- [cpoma@mitre.org] - Added default["stig"]["mount_disable"]["disable_usb_storage"] to disable USB Storage. RHEL-06-000503 - CCI-001250
--- [cpoma@mitre.org] - Configure /etc/security/limits.conf max_login default to 10 or less
+-- [cpoma@mitre.org] - Configure /etc/security/limits.conf max_login default to 10 or less. This capability uses a DataBag value in proc_hard.rb, if present
+-- [cpoma@mitre.org] - Added default['stig']['postfix']['smtpd_client_restrictions_rhel'] for use in
+templates/default/etc_man.cf_rhel.erb to disable mail relaying. RHEL-07-040480 - CCI-000366
+-- [kdshah@mitre.org] - Added template for /etc/inittab - CCE-4241-6
+-- [kdshah@mitre.org] - Added default['stig']['login_defs']['pass_min_length'],
+default['stig']['login_defs']['umask'], default['stig']['login_defs']['inactive_days'], default['stig']['login_defs']['fail_delay'] for use in templates/default/etc_default_useradd.erb and templates/default/logon_defs.erb
+-- [kdshah@mitre.org] - Added local_users recipe to remove users and folders that do not belong. Set shells for various service accounts.
 ### Updated
 -- [isuftin@usgs.gov] - STIG 6.2.7 - Update script to check for users having a home dir
 -- [isuftin@usgs.gov] - Narrowed down sshd MACs config to what works for EL6 and EL7
@@ -31,6 +38,7 @@ sysctl cookbook version >= 1.0.0
 -- [isuftin@usgs.gov] - Add guard to sysctl call in order to work around bug https://github.com/chef/chef/issues/7189
 -- [isuftin@usgs.gov] - Switched Changelog format
 -- [isuftin@usgs.gov] - Fixed styling for Rubocop 0.55.0
+-- [kdshah@mitre.org] - Added SSH private host key file permission to recipe/sshd_config.rb
 ### Fixed
 -- [cpoma@mitre.org] - Bugfix in stig/recipes/mail_transfer_agent.rb to use platform_family versus platform
 -- [cpoma@mitre.org] - Bugfix in stig/attributes/default.rb - Errors out and sshd dies (bricking machine) on RH 7

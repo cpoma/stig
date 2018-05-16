@@ -403,6 +403,11 @@ default['stig']['mount_disable']['squashfs'] = true
 default['stig']['mount_disable']['udf'] = true
 default['stig']['mount_disable']['vfat'] = true
 
+# Disable USB Storage - RHEL-06-000503 - CCI-001250
+# true = disable
+# false = enable
+default['stig']['mount_disable']['disable_usb_storage'] = true
+
 # Disable Avahi Server
 # true / false
 default['stig']['network']['zeroconf'] = true
@@ -1079,8 +1084,22 @@ default['stig']['login_defs']['pass_max_days'] = 60
 # Set Password Change Minimum Number of Days
 default['stig']['login_defs']['pass_min_days'] = 7
 
+# Set Password Minimum Length
+default['stig']['login_defs']['pass_min_length'] = 15
+
 # Set Password Expiring Warning Days
 default['stig']['login_defs']['pass_warn_age'] = 15
+
+# Set Default UMASK
+default['stig']['login_defs']['umask'] = '077'
+
+# Set login fail delay. STIG setting is 4
+default['stig']['login_defs']['fail_delay'] = 4
+
+# CIS Benchmark v2.2.0
+# RHEL 7: 5.4.1.4 Ensure inactive password lock is 30 days or less (Scored)
+# Set INACTIVE Days before locking out a local account
+default['stig']['login_defs']['inactive_days'] = 30
 
 # Set the login banner(s)
 default['stig']['login_banner']['motd'] = ''
@@ -1359,6 +1378,12 @@ default['stig']['postfix']['relayhost'] = ''
 # In the left-hand side, specify an @domain.tld wild-card, or specify
 # a user@domain.tld address.
 #
+# Redhat restriction that the Postfix SMTP server applies in the context of a
+# client connection request. DISA STIG requires the system to be configured to
+# prevent unrestricted mail relaying. RHEL-07-040480 - CCI-000366
+# DISA REDHAT STIG Setting: "permit_mynetworks, reject"
+default['stig']['postfix']['smtpd_client_restrictions_rhel'] = 'permit_mynetworks, reject'
+#
 # relay_recipient_maps = hash:/etc/postfix/relay_recipients
 default['stig']['postfix']['relay_recipient_maps'] = ''
 # The in_flow_delay configuration parameter implements mail input
@@ -1629,4 +1654,29 @@ default['stig']['pam_d']['config']['system_auth'] = [
   '-session     optional      pam_systemd.so',
   'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
   'session     required      pam_unix.so'
+]
+
+# Used by the stig::local_users recipe
+default['stig']['local_users']['dirs_to_delete']['dir'] = [
+  '/usr/games',
+  '/var/games',
+  '/var/lib/games',
+  '/usr/local/games',
+  '/usr/lib/games',
+  '/usr/share/games',
+  '/usr/lib64/games'
+]
+
+# Used by the stig::local_users recipe
+default['stig']['local_users']['users_to_delete']['user'] = %w[
+  ftp
+  gopher
+  games
+]
+
+# Used by the stig::local_users recipe
+default['stig']['local_users']['nologin_shell']['user'] = %w[
+  halt
+  shutdown
+  sync
 ]

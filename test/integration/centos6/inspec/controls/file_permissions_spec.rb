@@ -157,29 +157,29 @@ end
 # CENTOS 6.1.5
 # UBUNTU 9.1.3
 describe command('stat -c "%a %u %g" /etc/cron.hourly | egrep ".00 0 0"') do
-  its(:stdout) { should match /600 0 0/ }
+  its(:stdout) { should match /700 0 0/ }
 end
 
 # CENTOS 6.1.6
 # UBUNTU 9.1.4
 describe command('stat -c "%a %u %g" /etc/cron.daily | egrep ".00 0 0"') do
-  its(:stdout) { should match /600 0 0/ }
+  its(:stdout) { should match /700 0 0/ }
 end
 
 # CENTOS 6.1.7
 # UBUNTU 9.1.5
 describe command('stat -L -c "%a %u %g" /etc/cron.weekly | egrep ".00 0 0"') do
-  its(:stdout) { should match /600 0 0/ }
+  its(:stdout) { should match /700 0 0/ }
 end
 
 # CENTOS 6.1.8
 # UBUNTU 9.1.6
 describe command('stat -L -c "%a %u %g" /etc/cron.monthly | egrep ".00 0 0"') do
-  its(:stdout) { should match /600 0 0/ }
+  its(:stdout) { should match /700 0 0/ }
 end
 
 # CENTOS 6.1.9
 # UBUNTU 9.1.7
 describe command('stat -L -c "%a %u %g" /etc/cron.d | egrep ".00 0 0"') do
-  its(:stdout) { should match /600 0 0/ }
+  its(:stdout) { should match /700 0 0/ }
 end

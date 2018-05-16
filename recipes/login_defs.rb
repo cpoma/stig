@@ -21,6 +21,19 @@ template '/etc/login.defs' do
   variables(
     pass_max_days: node['stig']['login_defs']['pass_max_days'],
     pass_min_days: node['stig']['login_defs']['pass_min_days'],
-    pass_warn_age: node['stig']['login_defs']['pass_warn_age']
+    pass_warn_age: node['stig']['login_defs']['pass_warn_age'],
+    pass_min_length: node['stig']['login_defs']['pass_min_length'],
+    umask: node['stig']['login_defs']['umask'],
+    fail_delay: node['stig']['login_defs']['fail_delay']
+  )
+end
+
+template '/etc/default/useradd' do
+  source 'etc_default_useradd.erb'
+  owner 'root'
+  group 'root'
+  mode 0o600
+  variables(
+    inactive_days: node['stig']['login_defs']['inactive_days']
   )
 end

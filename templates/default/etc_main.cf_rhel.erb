@@ -329,6 +329,14 @@ mynetworks = <%= node['stig']['postfix']['mynetworks'] %>
 relay_domains = <%= node['stig']['postfix']['relay_domains'] %>
 <% end %>
 
+<% if node['stig']['postfix']['smtpd_client_restrictions_rhel'] -%>
+# Redhat restriction that the Postfix SMTP server applies in the context of a 
+# client connection request. DISA STIG requires the system to be configured to 
+# prevent unrestricted mail relaying. RHEL-07-040480 - CCI-000366
+# DISA REDHAT STIG Setting: "permit_mynetworks, reject"
+smtpd_client_restrictions = <%= node['stig']['postfix']['smtpd_client_restrictions_rhel'] %>
+<% end -%>
+
 # INTERNET OR INTRANET
 
 # The relayhost parameter specifies the default host to send mail to
